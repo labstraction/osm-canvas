@@ -29,10 +29,10 @@ function drawWorldinCanvas(world, canvas) {
             });
             ctx.strokeStyle = w.color || 'black';
             ctx.fillStyle = w.color || 'black';
-            if (w.color === 'red') {
-              ctx.fill();
-            }
-            ctx.lineWidth = 2;
+            // if (w.color === 'red') {
+            //   ctx.fill();
+            // }
+            ctx.lineWidth = 1;
             ctx.stroke();
         }
     });

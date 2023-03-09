@@ -6,7 +6,7 @@ function osmService() {
         const centerH = renderHeight / 2;
         const scale = 200000;
         const world = osmData.elements.map(w => {
-            const worldObj = {...w.tags, type: w.type, color: w.tags?.building ? 'red' : 'black'};
+            const worldObj = {...w.tags, type: w.type, color: w.tags?.building ? '#223' : '#f00'};
             worldObj.path = w.geometry.map(n => {
                 const x = (n.lon - lng) * scale + centerW;
                 const y = (n.lat - lat) * scale + centerH;
@@ -19,7 +19,7 @@ function osmService() {
 
     function getOsmData(lat, lng, radius) {
         const bbox = [lat - radius, lng - radius, lat + radius, lng + radius].join(',');
-        var url = 'http://overpass-api.de/api/interpreter?data=[out:json];(way["building"]('+ bbox +');way["highway"]('+ bbox +'););out geom;';
+        var url = 'http://overpass-api.de/api/interpreter?data=[out:json];way('+ bbox +');out geom;';
         return fetch(url).then((r) => r.json())
                          .then(d => prepareOsmData(d, lat, lng, 500, 500));
     }
