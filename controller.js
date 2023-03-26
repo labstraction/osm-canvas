@@ -23,9 +23,6 @@ class Controller {
             this.isLeftClicked = true;
         }
 
-
-        // pippo vince
-
     }
 
     onKeyUp(event) {

@@ -1,12 +1,20 @@
 function osmService() {
 
-    function prepareOsmData(osmData, lat, lng, renderWidth, renderHeight) {
+    function prepareOsmData(osmData, lat, lng, renderWidth, renderHeight, zoom) {
         console.log('eccp',osmData);
         const centerW = renderWidth / 2;
         const centerH = renderHeight / 2;
-        const scale = 200000;
+        const scale = renderWidth * zoom;
         const world = osmData.elements.map(w => {
-            const worldObj = {...w.tags, type: w.type, color: w.tags?.building ? '#223' : '#f00'};
+            const worldObj = {...w.tags, type: w.type, color: w.tags?.building ? 
+                                                                '#223' : 
+                                                                w.tags?.highway ? 
+                                                                  '#f0f': 
+                                                                  w.tags?.natural ?
+                                                                    '#00f' :
+                                                                    w.tags?.leisure ? 
+                                                                      '#0f0' :
+                                                                      '#f00'};
             worldObj.path = w.geometry.map(n => {
                 const x = (n.lon - lng) * scale + centerW;
                 const y = (n.lat - lat) * scale + centerH;
@@ -17,11 +25,11 @@ function osmService() {
         return world;
     }
 
-    function getOsmData(lat, lng, radius) {
+    function getOsmData(lat, lng, radius, renderWidth, renderHeight, zoom) {
         const bbox = [lat - radius, lng - radius, lat + radius, lng + radius].join(',');
         var url = 'http://overpass-api.de/api/interpreter?data=[out:json];way('+ bbox +');out geom;';
         return fetch(url).then((r) => r.json())
-                         .then(d => prepareOsmData(d, lat, lng, 500, 500));
+                         .then(d => prepareOsmData(d, lat, lng, renderWidth, renderHeight, zoom));
     }
 
     return {
